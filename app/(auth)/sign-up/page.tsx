@@ -62,11 +62,12 @@ const page = () => {
     setIsSubmitting(true)
 
     try {
+      console.log("form submitted");
+      
       const response = await axios.post<ApiResponse>('/api/sign-up', data)
 
       toast.add({
         type:"success",
-        title: "Success",
         description: response.data.message
       })
 
@@ -77,7 +78,7 @@ const page = () => {
       const axiosError = error as AxiosError<ApiResponse>
       let errorMessage = axiosError.response?.data.message
       toast.add({
-        type: "Signup failed",
+        type: "error",
         description: errorMessage,
       })
       setIsSubmitting(false)
@@ -155,16 +156,16 @@ const page = () => {
                 )}
               />
             </FieldGroup>
+            <Button type="submit" disabled={isSubmitting}>
+              {
+                isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin " /> Please wait
+                  </>
+                ) : ('Sign Up')
+              }
+            </Button>
           </form>
-          <Button type="submit" disabled={isSubmitting}>
-            {
-              isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin " /> Please wait
-                </>
-              ) : ('Signup')
-            }
-          </Button>
         <div className="text-center mt-4">
           <p>
             Already a member?{' '}
