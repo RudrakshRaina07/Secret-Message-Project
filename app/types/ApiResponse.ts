@@ -1,7 +1,8 @@
 import { Message } from "@/app/models/User"
+import { undefined } from "zod";
 export interface ApiResponse{
     success: boolean;
     message: string;
-    isAccepingMessage?: boolean;
-    messages?: Array<Message>
+    isAcceptingMessage?: boolean;
+    messages?: Array<Message>;
 }
