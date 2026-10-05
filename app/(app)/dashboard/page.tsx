@@ -1,3 +1,5 @@
+'use client'
+
 import { Message} from "@/app/models/User";
 import { acceptMessageSchema } from "@/app/Schema/acceptMessageSchema";
 import { ApiResponse } from "@/app/types/ApiResponse";
@@ -8,7 +10,6 @@ import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {User} from "next-auth"
-import { success } from "zod";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Loader2, RefreshCcw } from "lucide-react";
@@ -114,7 +115,7 @@ const page = () => {
     }
   }
 
-  const {username} = session?.user as User
+  const username = session?.user as User
 
   const baseUrl = `${window.location.protocol}//${window.location.hostname}`
   const profileUrl = `${baseUrl}/u/${username}`

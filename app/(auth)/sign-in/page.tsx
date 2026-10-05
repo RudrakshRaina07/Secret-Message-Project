@@ -1,22 +1,14 @@
 'use client'
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect, useState } from "react";
 import { Controller,useForm } from "react-hook-form"
 import * as z from "zod"
-import { useDebounceCallback } from 'usehooks-ts'
 import { toast } from "@/components/ui/toast"
 import { useRouter } from "next/navigation";
-import { signupSchema } from "@/app/Schema/signupSchema";
-import axios, { AxiosError } from "axios";
-import { ApiResponse } from "@/app/types/ApiResponse";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import Link from "next/link"
 import { signinSchema } from "@/app/Schema/signinSchema";
 import { signIn } from "next-auth/react";
-import da from "zod/v4/locales/da.cjs";
 
 const page = () => {
   const router = useRouter()
