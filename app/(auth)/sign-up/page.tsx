@@ -74,14 +74,17 @@ const page = () => {
       router.replace(`/verify/${username}`)
       setIsSubmitting(false)
     } catch (error) {
-      console.error("Error in signup of user: ", error)
-      const axiosError = error as AxiosError<ApiResponse>
-      let errorMessage = axiosError.response?.data.message
+      console.error("Error in signup of user:", error);
+
+      const axiosError = error as AxiosError<ApiResponse>;
+
       toast.add({
         type: "error",
-        description: errorMessage,
-      })
-      setIsSubmitting(false)
+        description:
+          axiosError.response?.data?.message ?? "Something went wrong",
+      });
+
+      setIsSubmitting(false);
     }
   }
   

@@ -21,9 +21,14 @@ const Navbar = () => {
                             <Button className="w-full md:w-auto" onClick={() => signOut()}>Logout</Button>
                         </>
                     ) : (
-                        <Link href='/sign-in'>
-                            <Button className="w-full md:w-auto">Login</Button>
-                        </Link>
+                        <div className="flex gap-5">
+                            <Link href='/sign-up'>
+                                <Button className="w-full md:w-auto">SignUp</Button>
+                            </Link>
+                            <Link href='/sign-in'>
+                                <Button className="w-full md:w-auto">Login</Button>
+                            </Link>
+                        </div>
                     )
                 }
             </div>

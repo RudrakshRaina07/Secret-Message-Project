@@ -29,7 +29,10 @@ const page = () => {
   const {data: session} = useSession()
 
   const form = useForm({
-    resolver: zodResolver(acceptMessageSchema)
+    resolver: zodResolver(acceptMessageSchema),
+    defaultValues: {
+      acceptMessage: true,
+    },
   })
 
   const {register, watch, setValue} = form
@@ -92,19 +95,25 @@ const page = () => {
 
   }, [session, setValue, fetchAcceptMessage, fetchMessages])
 
-  const handleSwitchChange = async() => {
+  const handleSwitchChange = async(checked: boolean) => {
+    const previousValue = acceptMessage
+
+    setValue("acceptMessage", checked)
+
+    setIsSwitching(true)
     try {
       const response = await axios.post<ApiResponse>('/api/accept-messages', {
-        acceptMessage: !acceptMessage
+        acceptMessage: checked
       })
 
-      setValue('acceptMessage', !acceptMessage)
+      setValue('acceptMessage', checked)
 
       toast.add({
         title: response.data.message,
       })
 
     } catch (error) {
+      setValue("acceptMessage", previousValue);
       const axiosError = error as AxiosError<ApiResponse>
 
       toast.add({
@@ -112,12 +121,19 @@ const page = () => {
         type: "error",
         description: axiosError.response?.data.message || "Failed to fetch message settings",
       })
+    }finally{
+      setIsSwitching(false)
     }
   }
 
-  const username = session?.user as User
+  if(!session || !session.user){
+    return <div>Please login!</div>
+  }
+
+  const user = session?.user as User
 
   const baseUrl = `${window.location.protocol}//${window.location.hostname}`
+  const username = user.username
   const profileUrl = `${baseUrl}/u/${username}`
 
   const copyToClipboard = () =>{
@@ -127,10 +143,6 @@ const page = () => {
       type: "success",
       description: "Profile URL has been copied to clipboard"      
     })
-  }
- 
-  if(!session || !session.user){
-    return <div>Please login!</div>
   }
 
   return (

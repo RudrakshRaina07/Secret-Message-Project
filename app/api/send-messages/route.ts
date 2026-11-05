@@ -6,9 +6,11 @@ export async function POST(request: Request) {
     await dbConnect()
 
     const {username, content} = await request.json();
+    console.log(username, content);
+    
 
     try {
-        const user = await UserModel.findOne(username);
+        const user = await UserModel.findOne({username});
 
         if(!user){
             return Response.json(
@@ -35,7 +37,12 @@ export async function POST(request: Request) {
         }
 
         const newMessage = {content, createdAt: new Date()}
-        user.message.push(newMessage as Message)
+
+        if (!user.messages) {
+            user.messages = [];
+        }
+
+        user.messages.push(newMessage as Message)
 
         await user.save()
 

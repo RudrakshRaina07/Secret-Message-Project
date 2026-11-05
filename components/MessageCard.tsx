@@ -33,7 +33,12 @@ type MessageCardProps = {
     onMessageDelete: (messageId: string) => void
 }
 
-const MessageCard = async({message, onMessageDelete}: MessageCardProps) => {
+const MessageCard = ({message, onMessageDelete}: MessageCardProps) => {
+
+    const messageDate =
+        message.createdAt instanceof Date
+            ? message.createdAt.toLocaleString()
+            : new Date(message.createdAt).toLocaleString();
 
     const handleDeleteConfirm = async () => {
         const response = await axios.delete<ApiResponse>(`/api/delete-message/${message._id}`)
@@ -48,8 +53,6 @@ const MessageCard = async({message, onMessageDelete}: MessageCardProps) => {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-
                 <AlertDialog>
                 <AlertDialogTrigger render={<Button variant="destructive"><X className="w-5 h-5"/></Button>} />
                 <AlertDialogContent>
@@ -66,10 +69,12 @@ const MessageCard = async({message, onMessageDelete}: MessageCardProps) => {
                     </AlertDialogFooter>
                 </AlertDialogContent>
                 </AlertDialog>
-                <CardDescription>Card Description</CardDescription>
+                <CardDescription
+                    className="text-lg font-medium text-black whitespace-pre-wrap wrap-break-word leading-6"
+                >{message.content}</CardDescription>
             </CardHeader>
             <CardContent>
-                <p>Card Content</p>
+                <p className="text-gray-500">{messageDate}</p>
             </CardContent>
         </Card>
 

@@ -7,8 +7,8 @@ import { success } from "zod";
 import { messageSchema } from "@/app/Schema/messageSchema";
 
 export async function POST(request: Request) {
-    await dbConnect()
     try {
+        await dbConnect()
         const {username, email, password} = await request.json()
 
         const existingUserVerifiedByUsername = await UserModel.findOne({
@@ -95,11 +95,14 @@ export async function POST(request: Request) {
         )
 
     } catch (error) {
-        console.error("Error registering user: ", error)
+        console.error("ERROR REGISTERING USER:", error)
+
         return Response.json(
             {
                 success: false,
-                message: "Error registering user"
+                message: error instanceof Error
+                    ? error.message
+                    : "Error registering user"
             },
             {
                 status: 500

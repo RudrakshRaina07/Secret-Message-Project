@@ -9,6 +9,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 import { signinSchema } from "@/app/Schema/signinSchema";
 import { signIn } from "next-auth/react";
+import fa from "zod/v4/locales/fa.cjs";
 
 const page = () => {
   const router = useRouter()
@@ -22,9 +23,12 @@ const page = () => {
   })
 
   const onSubmit = async (data: z.infer<typeof signinSchema>) => {
+    console.log("form submitted");
+    
     const result = await signIn('credentials', {
       identifier: data.identifier,
-      password: data.password
+      password: data.password,
+      redirect: false,
     })
 
     if(result?.error){
